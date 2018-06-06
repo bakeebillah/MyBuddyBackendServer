@@ -149,6 +149,12 @@ const statustest = (req, res) => {
     });
 };
 
+const messageback = (req, res) => {
+    console.log('Hello World');
+    console.log(res);
+    res.status(200).send({'message': 'Hello World'});
+}
+
 
 
 module.exports = {
@@ -156,6 +162,7 @@ module.exports = {
     register,
     me,
     logout,
-    statustest
+    statustest,
+    messageback
 
 };

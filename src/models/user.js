@@ -4,13 +4,13 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
-    email: {
+    username: {
         type: String,
         unique: true,
         required: true,
         trim: true
     },
-    username: {
+    email: {
         type: String,
         unique: true,
         required: true,
@@ -20,6 +20,39 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
+    /*
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
+    birthday: {
+        type: date,
+        require: true
+    },
+    street: {
+        type: String,
+        require: true
+    },
+    streetnumber: {
+        type: Number,
+        required: true
+    },
+    zip: {
+        type: Number,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    }
+    */
+
+
+
 });
 
 
