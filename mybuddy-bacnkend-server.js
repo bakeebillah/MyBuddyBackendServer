@@ -3,23 +3,16 @@ const http = require ('http');
 const mongoose   = require('mongoose');
 const api = require('./src/api');
 const config = require('./src/configaration');
+const socketController = require('./src/controllers/socketController');
 
 // set the port to the API
 api.set('port',config.port);
 
 // Create a http server
 const server = http.createServer(api);
-const io = require('socket.io')(server);
-io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.on('disconnect', function(){
-        console.log('User Disconnected');
-    });
+const io = module.exports.io = require('socket.io')(server);
 
-    socket.on('example_message', function(msg){
-        console.log('message: ' + msg);
-    });
-});
+io.on('connection', socketController);
 io.listen(8000);
 
 mongoose
@@ -40,5 +33,3 @@ server.on('error', (err) => {
     console.log('Error in the server', err.message);
     process.exit(err.statusCode);
 });
-
-
