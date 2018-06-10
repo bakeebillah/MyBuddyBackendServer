@@ -19,7 +19,7 @@ var UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
     /*
     firstname: {
         type: String,
@@ -48,16 +48,18 @@ var UserSchema = new mongoose.Schema({
     city: {
         type: String,
         required: true
+    },
+    contacted: {
+        type: String,
+        required: false
     }
     */
-
-
-
+    socketid: {
+        type: String,
+        required: true,
+        unique: true
+    }
 });
 
 
-
-
-
-var User = mongoose.model('User', UserSchema);
-module.exports = User;
+module.exports = mongoose.model('userModel', UserSchema);
