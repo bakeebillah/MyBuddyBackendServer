@@ -88,36 +88,7 @@ const login = (req,res)=>{
             error: 'User Not Found',
             message: error.message
         }));
-
-    userModel.updateOne(
-        {username: req.body.username},
-        {$set: {socketid: req.body.socketid}}
-        ).exec();
-
 };
-
-const getSocketID = (req,res) => {
-    // Checking blank username
-    if(!req.body.username){
-        return res.status(400).json({
-            error:'Bad Request',
-            message: 'The request must contain a username property'
-        });
-    } // end if - Checking blank username
-    userModel.findOne({username: req.body.username}).exec()
-        .then(user => {
-            console.log(user);
-            if(!user.socketid) {
-                return res.status(401).send({socketid: null});
-            }
-            console.log('YESSS')
-            res.status(200).json({socketid: user.socketid});
-        })
-        .catch(error => res.status(404).json({
-            error: 'User Not Found',
-            message: error.message
-        }));
-}
 
 const me = (req, res) => {
 
@@ -188,6 +159,5 @@ module.exports = {
     logout,
     statustest,
     messageback,
-    getUser,
-    getSocketID
+    getUser
 };

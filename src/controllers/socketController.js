@@ -2,7 +2,7 @@ const io = require('../../mybuddy-bacnkend-server').io;
 
 const connectedUser = {}
 
-module.exports = function(socket) {
+module.exports = (socket) => {
     console.log('Socket ID: ' + socket.id);
 
     socket.on('chatroom', (sender, recipient, message) => {
@@ -10,21 +10,26 @@ module.exports = function(socket) {
         console.log(message);
     });
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', () => {
         console.log('User Disconnected');
 
     });
 
-    socket.on('example_message', function(msg){
+    socket.on('example_message', (msg) => {
         console.log('message: ' + msg.message);
     });
 
     socket.on('private_message', (message) => {
-        socket.to(message.recipient).emit('private_message', message);
         console.log("sender: " + message.sender);
         console.log("recipient: " + message.recipient);
         console.log("message: " + message.message);
         console.log(connectedUser)
+        if (connectedUser[message.sender] === undefined) {
+            socket.emit('user_offline');
+        }
+        else {
+            socket.to(connectedUser[message.recipient]).emit('private_message', message)
+        }
     });
 
     socket.on('login', (username) => {

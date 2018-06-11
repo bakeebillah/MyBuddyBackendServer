@@ -54,11 +54,6 @@ var UserSchema = new mongoose.Schema({
         required: false
     }
     */
-    socketid: {
-        type: String,
-        required: true,
-        unique: true
-    }
 });
 
 
