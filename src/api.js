@@ -7,7 +7,7 @@ const middleware = require('./middleware');
 
 
 const auth = require('./routes/authenticationRouter');
-
+const buddy = require('./routes/buddyRouter');
 
 const api = express();
 
@@ -28,6 +28,7 @@ api.get('/',(req,res)=>{
 
 // api routes
 api.use('/auth',auth)
+api.use('/buddy',buddy)
 
 module.exports = api;
 

@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
-var UserSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
@@ -19,12 +19,59 @@ var UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    userType: {
+        type: String,
+        required: false
+    },
+    dateOfBirth: {
+        type: Date,
+        required: false
+    },
+    isPremiumUser: {
+        type: Boolean,
+        required: false
+    },
+    gender:{
+        type: String,
+        required: false
+    },
+    country:{
+        type: String,
+        required: false
+    },
+    city:{
+        type: String,
+        required: false
+    },
+    address:{
+        type: String,
+        required: false
+    },
+    mobileNumber:{
+        type: String,
+        required: false
+    },
+    knownLanguage:{
+        type:String,
+        required:false
+    },
+    firstName:{
+        type: String,
+        required:false
+    },
+    lastName:{
+        type: String,
+        required:false
+
     }
+
+
 });
 
 
 
 
 
-var User = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', userSchema);
 module.exports = User;
