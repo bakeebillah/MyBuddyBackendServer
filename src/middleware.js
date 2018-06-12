@@ -45,8 +45,30 @@ const errorHandler = (err, req, res, next) => {
     res.render('error', { error: err })
 };
 
+const createChat = ({messages = [], name = "Community", users = []} = {})=>(
+    {
+        name,
+        messages,
+        users,
+        typingUsers:[]
+    }
+)
+
+const createMessage = ({message = "", sender = ""} = { })=>(
+    {
+        time:getTime(new Date(Date.now())),
+        message,
+        sender
+    }
+
+)
+
+
 module.exports = {
     allowCrossDomain,
     checkAuthentication,
-    errorHandler
+    errorHandler,
+    createChat,
+    createMessage
 };
+
