@@ -56,7 +56,7 @@ module.exports = (socket) => {
                 receiver,
                 message: createMessage({message: message, sender:sender})
             }
-            //socket.to(connectedUsers[receiver]).emit(RECEIVE_PRIVATE_MESSAGE, newMessage); //send message to receiver
+            socket.to(connectedUsers[receiver]).emit(RECEIVE_PRIVATE_MESSAGE, newMessage); //send message to receiver
             socket.emit(RECEIVE_PRIVATE_MESSAGE, newMessage); //send message back to sender
             //TODO: save messages in chat history for receiver to receive upon login
         }
@@ -67,7 +67,7 @@ module.exports = (socket) => {
         //TODO: Find chat in database, else create a new one
         let newChat = createChat({name:`${receiver}&${sender}`, users: [receiver, sender], messages: []})
         let receiverid = connectedUsers[receiver];
-        //socket.to(receiverid).emit(RECEIVE_NEW_CHAT, newChat);
+        socket.to(receiverid).emit(RECEIVE_NEW_CHAT, newChat);
         socket.emit(RECEIVE_NEW_CHAT, newChat);
 
         /*
