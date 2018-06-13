@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const config = require('./configaration');
 const middleware = require('./middleware');
 const auth = require('./routes/authenticationRouter');
-const message = require('./routes/messageRoute')
 
 
 const api = express();
@@ -27,7 +26,6 @@ api.get('/',(req,res)=>{
 
 // api routes
 api.use('/auth',auth);
-api.use('/message',message);
 
 
 module.exports = api;

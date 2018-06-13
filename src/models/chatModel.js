@@ -1,18 +1,27 @@
-const mongoose = require('mongoose');
+"use strict";
 
-const ChatSchema = new mongoose.Schema({
-        chatID: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true
-        },
-        body: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Message'
-        }],
-        charPartner: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Message'
-        }]
-    });
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
+
+var ChatSchema = new mongoose.Schema({
+    chatID: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    messages: [
+        String
+    ]
+    ,
+    users: [
+        String
+    ]
+
+})
 
 module.exports = mongoose.model('chatModel', ChatSchema);
