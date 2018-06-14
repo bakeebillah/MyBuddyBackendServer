@@ -3,14 +3,14 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
-var UserSchema = new mongoose.Schema({
-    username: {
+var userSchema = new mongoose.Schema({
+    email: {
         type: String,
         unique: true,
         required: true,
         trim: true
     },
-    email: {
+    username: {
         type: String,
         unique: true,
         required: true,
@@ -20,41 +20,58 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    /*
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
-    birthday: {
-        type: date,
-        require: true
-    },
-    street: {
-        type: String,
-        require: true
-    },
-    streetnumber: {
-        type: Number,
-        required: true
-    },
-    zip: {
-        type: Number,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    contacted: {
+    userType: {
         type: String,
         required: false
+    },
+    dateOfBirth: {
+        type: Date,
+        required: false
+    },
+    isPremiumUser: {
+        type: Boolean,
+        required: false
+    },
+    gender:{
+        type: String,
+        required: false
+    },
+    country:{
+        type: String,
+        required: false
+    },
+    city:{
+        type: String,
+        required: false
+    },
+    address:{
+        type: String,
+        required: false
+    },
+    mobileNumber:{
+        type: String,
+        required: false
+    },
+    knownLanguage:{
+        type:String,
+        required:false
+    },
+    firstName:{
+        type: String,
+        required:false
+    },
+    lastName:{
+        type: String,
+        required:false
+
     }
-    */
+
+
 });
 
 
-module.exports = mongoose.model('userModel', UserSchema);
+
+
+
+var UserModel = mongoose.model('UserModel', userSchema);
+module.exports = UserModel;
