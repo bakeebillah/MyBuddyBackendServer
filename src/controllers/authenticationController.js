@@ -7,16 +7,9 @@ const bcrypt = require('bcrypt');
 
 
 const register =(req,res)=>{
-    if (req.body.password !== req.body.passwordConf) {
-        return res.status(400).json({
-         error:'Bad Request' ,
-            message:'Passwords do not match.'
-        });
-    }
     if (req.body.email &&
         req.body.username &&
-        req.body.password &&
-        req.body.passwordConf) {
+        req.body.password) {
 
         const user = Object.assign(req.body, {password: bcrypt.hashSync(req.body.password, 8)});
         //use schema.create to insert data into the db
@@ -59,7 +52,7 @@ const login = (req,res)=>{
     // Checking blank username
     if(!req.body.username){
         return res.status(400).json({
-            error:'Bad Request',
+            error:'Missing Username',
             message: 'The request must contain a username property'
         });
     } // end if - Checking blank username
@@ -67,7 +60,7 @@ const login = (req,res)=>{
     // Checking blank password
     if(!req.body.password){
         return res.status(400).json({
-            error:'Bad Request',
+            error:'Missing Password',
             message: 'The request must contain a password property'
         });
     }// end if of Checking blank password
@@ -86,7 +79,7 @@ const login = (req,res)=>{
         })
         .catch(error => res.status(404).json({
             error: 'User Not Found',
-            message: error.message
+            message: error.message,
         }));
 };
 
