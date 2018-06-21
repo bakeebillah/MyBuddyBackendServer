@@ -3,14 +3,17 @@ const http = require ('http');
 const mongoose   = require('mongoose');
 const api = require('./src/api');
 const config = require('./src/configaration');
+const socketController = require('./src/controllers/socketController');
 
 // set the port to the API
 api.set('port',config.port);
 
 // Create a http server
 const server = http.createServer(api);
+const io = module.exports.io = require('socket.io')(server);
 
-
+io.on('connection', socketController);
+io.listen(8000);
 
 mongoose
     .connect(config.mongoURI)
