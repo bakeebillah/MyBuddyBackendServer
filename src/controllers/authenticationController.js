@@ -7,31 +7,38 @@ const bcrypt = require('bcrypt');
 
 
 const register =(req,res)=>{
-    if (req.body.password !== req.body.passwordConf) {
-    return res.status(400).json({
-     error:'Bad Request' ,
-        message:'Passwords do not match.'
-    });
+    if (req.body.email &&
+            req.body.username &&
+            req.body.password) {
 
-}
-
-if (req.body.email &&
-        req.body.username &&
-        req.body.password) {
-
-        const user = Object.assign(req.body, {password: bcrypt.hashSync(req.body.password, 8)});
-        //use schema.create to insert data into the db
-        userModel.create(user)
-            .then(user => {
-                // if user is registered without errors
-                // create a token
-                const token = jsonWebToken.sign({ id: user._id, username: user.username }, config.JwtSecret, {
-                    expiresIn: 86400 // expires in 24 hours
-                });
-                res.status(200).json({
-                    token: token,
-                    message: "Successfully created your account."
-                });
+            const user = Object.assign(req.body, {password: bcrypt.hashSync(req.body.password, 8)});
+            //use schema.create to insert data into the db
+            userModel.create(user)
+                .then(user => {
+                    // if user is registered without errors
+                    // create a token
+                    const token = jsonWebToken.sign({ id: user._id, username: user.username }, config.JwtSecret, {
+                        expiresIn: 86400 // expires in 24 hours
+                    });
+                    res.status(200).json({
+                        token: token,
+                        message: "Successfully created your account."
+                    });
+                })
+                .catch(error => {
+                    if(error.code == 11000) {
+                        res.status(400).json({
+                            error: 'User exists',
+                            message: error.message
+                        })
+                    }
+                    else{
+                        res.status(500).json({
+                            error: 'Internal server error',
+                            message: error.message
+                        })
+                    }
+                res.status(200).json({token: token});
             })
             .catch(error => {
                 if(error.code == 11000) {
@@ -46,31 +53,16 @@ if (req.body.email &&
                         message: error.message
                     })
                 }
-            res.status(200).json({token: token});
-        })
-        .catch(error => {
-            if(error.code == 11000) {
-                res.status(400).json({
-                    error: 'User exists',
-                    message: error.message
-                })
-            }
-            else{
-                res.status(500).json({
-                    error: 'Internal server error',
-                    message: error.message
-                })
-            }
+            });
+
+    }// end if
+    else {
+
+        return res.status(400).json({
+            error:'Bad Request' ,
+            message:'All fields required.'
         });
-
-}// end if
-else {
-
-    return res.status(400).json({
-        error:'Bad Request' ,
-        message:'All fields required.'
-    });
-} // end else
+    } // end else
 
 
 };
