@@ -65,6 +65,7 @@ module.exports = (socket) => {
 
     socket.on(CREATE_NEW_CHAT, ({receiver, sender}) => {
         //TODO: Find chat in database, else create a new one
+        console.log("create new chat")
         let newChat = createChat({name:`${receiver}&${sender}`, users: [receiver, sender], messages: []})
         let receiverid = connectedUsers[receiver];
         socket.to(receiverid).emit(RECEIVE_NEW_CHAT, newChat);

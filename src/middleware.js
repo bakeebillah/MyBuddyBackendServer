@@ -1,7 +1,7 @@
 "use strict";
 const config = require('./configaration');
 const jsonWebToken    = require('jsonwebtoken');
-
+const uuidv4 = require('uuid/v4');
 
 const allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -44,8 +44,30 @@ const errorHandler = (err, req, res, next) => {
     res.render('error', { error: err })
 };
 
+const createChat = ({messages = [], name = "", users = []} = {}) => ({
+        id: uuidv4(),
+        name,
+        messages,
+        users,
+    }
+)
+
+const createMessage = ({message = "", sender = ""} = {}) => ({
+        id: uuidv4(),
+        time: getTime(new Date(Date.now())),
+        message,
+        sender
+    }
+)
+
+const getTime = (date)=>{
+    return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
+}
+
 module.exports = {
     allowCrossDomain,
     checkAuthentication,
-    errorHandler
+    errorHandler,
+    createChat,
+    createMessage
 };
