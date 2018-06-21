@@ -20,7 +20,6 @@ api.use(middleware.allowCrossDomain);
 
 // Basic Route
 api.get('/',(req,res)=>{
-
     res.json({
         name:config.basicRouteMessage
     });
