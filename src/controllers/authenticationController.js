@@ -1,6 +1,6 @@
 "use strict";
 
-const userModel =  require('../models/user');
+const userModel =  require('../models/userModel');
 const jsonWebToken = require('jsonwebtoken');
 const config = require('../configaration');
 const bcrypt = require('bcrypt');
@@ -46,11 +46,7 @@ if (req.body.email &&
                         message: error.message
                     })
                 }
-            });
-
             res.status(200).json({token: token});
-
-
         })
         .catch(error => {
             if(error.code == 11000) {
