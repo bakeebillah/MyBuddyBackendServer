@@ -19,7 +19,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "No command",
-    "start": "node mybuddy-bacnkend-server.js"
+    "start": "nodemon mybuddy-bacnkend-server.js"
   },
   "repository": {
     "type": "git",
