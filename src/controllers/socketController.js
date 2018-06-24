@@ -44,15 +44,20 @@ module.exports = (socket) => {
             connectedUsers[socket.username] = socket.id;
         }
         console.log('Login', connectedUsers);
-        //TODO: Load all chats from
     });
 
     //reroute message send from sender to receiver if he is online
     socket.on(SEND_PRIVATE_MESSAGE, ({ chatid, sender, receiver, message}) => {
         if (connectedUsers[receiver] === undefined) {
-            console.log('Send Message', connectedUsers[receiver]);
-            socket.emit('user_offline');
-            //TODO: save messages in chat history for receiver to receive upon login
+            let newMessage = createMessage({message: message, sender:sender});
+            let messageToSend = {
+                chatid,
+                sender,
+                receiver,
+                message: newMessage
+            }
+            addToChat(newMessage, chatid);
+            socket.emit(RECEIVE_PRIVATE_MESSAGE, messageToSend); //send message back to sender
         }
         else {
             let newMessage = createMessage({message: message, sender:sender});
