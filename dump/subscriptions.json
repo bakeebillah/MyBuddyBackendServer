@@ -1,0 +1,20 @@
+[
+  {
+    subscription_id: 1,
+    subscriptionType: "Weekly",
+    pricePerMonth: 3.99,
+    pricePerDay: 0.57
+  },
+  {
+    subscription_id: 2,
+    subscriptionType: "Monthly",
+    pricePerMonth: 9.99,
+    pricePerDay: 0.33
+  },
+  {
+    subscription_id: 3,
+    subscriptionType: "Annual",
+    pricePerMonth: 99.99,
+    pricePerDay: 0.27
+  }
+]
