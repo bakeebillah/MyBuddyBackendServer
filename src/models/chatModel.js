@@ -1,10 +1,9 @@
 "use strict";
 
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
 
 var ChatSchema = new mongoose.Schema({
-    chatID: {
+    id: {
         type: String,
         required: true,
         unique: true
@@ -15,7 +14,23 @@ var ChatSchema = new mongoose.Schema({
         unique: true
     },
     messages: [
-        String
+        new mongoose.Schema(
+            {
+                id: {
+                    type: String,
+                    required: true,
+                    unique: true
+                },
+                message: {
+                    type: String,
+                    required: true
+                },
+                sender: {
+                    type: String,
+                    require: true
+                }
+            }
+        )
     ]
     ,
     users: [
