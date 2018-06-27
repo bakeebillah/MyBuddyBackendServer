@@ -1,8 +1,10 @@
 const io = require('../../mybuddy-bacnkend-server').io;
 const chatModel = require('../models/chatModel');
+const ratingModel = require('../models/ratingModel');
 
-const { LOGOUT, SEND_PRIVATE_MESSAGE, RECEIVE_PRIVATE_MESSAGE, LOGIN, USER_DISCONNECTED, USER_RECONNECTED, CREATE_NEW_CHAT, RECEIVE_NEW_CHAT, RECEIVE_ALL_CHATS } = require('../Events')
-const { createMessage, createChat } = require('../middleware')
+const { LOGOUT, SEND_PRIVATE_MESSAGE, RECEIVE_PRIVATE_MESSAGE, LOGIN, USER_DISCONNECTED, USER_RECONNECTED,
+    CREATE_NEW_CHAT, RECEIVE_NEW_CHAT, RECEIVE_ALL_CHATS, LEAVE_RATING} = require('../Events');
+const { createMessage, createChat, createComment } = require('../middleware');
 
 connectedUsers = {}; //dictionary of users with their respective socketid
 
@@ -29,7 +31,6 @@ module.exports = (socket) => {
             .catch((error)=> {
                 console.log("something happened trying send all messages", error);
             })
-
     });
 
     socket.on(USER_DISCONNECTED, () => {
@@ -55,7 +56,7 @@ module.exports = (socket) => {
                 sender,
                 receiver,
                 message: newMessage
-            }
+            };
             addToChat(newMessage, chatid);
             socket.emit(RECEIVE_PRIVATE_MESSAGE, messageToSend); //send message back to sender
         }
@@ -67,7 +68,7 @@ module.exports = (socket) => {
                 sender,
                 receiver,
                 message: newMessage
-            }
+            };
 
             addToChat(newMessage, chatid);
             socket.to(connectedUsers[receiver]).emit(RECEIVE_PRIVATE_MESSAGE, messageToSend); //send message to receiver
@@ -99,7 +100,20 @@ module.exports = (socket) => {
                 socket.to(receiverid).emit(RECEIVE_NEW_CHAT, newChat);
                 socket.emit(RECEIVE_NEW_CHAT, newChat);
             })
-    })
+    });
+
+    socket.on(LEAVE_RATING, ({ sender, receiver, comment}) => {
+
+        let newComment = createComment({sender: `${sender}`, receiver: `${receiver}`, comment: `${comment}`});
+
+        ratingModel.create(newComment)
+            .then(()=> {
+                console.log("saving successful");
+            })
+            .catch((error)=> {
+                console.log("something happened creating the chat", error);
+            });
+    });
 
     socket.on('test', (msg) => {
         console.log('message: ' + msg.message);

@@ -60,6 +60,13 @@ const createMessage = ({message = "", sender = ""} = {}) => ({
     }
 )
 
+const createComment = ({sender = "", receiver = "", comment = ""} = {}) => ({
+    id: uuidv4(),
+    sender,
+    receiver,
+    comment
+});
+
 const getTime = (date)=>{
     return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
 }
@@ -69,5 +76,6 @@ module.exports = {
     checkAuthentication,
     errorHandler,
     createChat,
-    createMessage
+    createMessage,
+    createComment
 };
