@@ -10,7 +10,7 @@ const register =(req,res)=>{
     if (req.body.email &&
         req.body.username &&
         req.body.password) {
-            const user = Object.assign(req.body, {password: bcrypt.hashSync(req.body.password, 8)});
+            const user = Object.assign({userName:req.body.username},{email:req.body.email}, {password: bcrypt.hashSync(req.body.password, 8)});
             //use schema.create to insert data into the db
             userModel.create(user)
                 .then(user => {
@@ -77,7 +77,7 @@ const login = (req,res)=>{
             message: 'The request must contain a password property'
         });
     }// end if of Checking blank password
-    userModel.findOne({username: req.body.username}).exec()
+    userModel.findOne({userName: req.body.username}).exec()
         .then(user => {
             const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
             if (!isPasswordValid) return res.status(401).send({token: null });
@@ -98,7 +98,7 @@ const me = (req, res) => {
     var ObjectId = require('mongodb').ObjectId;
     var id = req.userId;
     var o_id = new ObjectId(id);
-    userModel.find({_id:o_id}).select('username').exec()
+    userModel.find({_id:o_id}).select('userName').exec()
         .then(user => {
             if (!user) return res.status(404).json({
                 error: 'Not Found',
@@ -133,7 +133,7 @@ const getUser = (req, res) => {
             message: 'The request must contain a username property'
         });
     } // end if - Checking blank username
-    userModel.findOne({username: req.body.username}).exec()
+    userModel.findOne({userName: req.body.username}).exec()
         .then(user => {
             res.sendStatus(200);
             console.log("found User:", req.body.username)

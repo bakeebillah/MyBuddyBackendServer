@@ -10,7 +10,7 @@ var userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    username: {
+    userName: {
         type: String,
         unique: true,
         required: true,
@@ -75,5 +75,5 @@ var userSchema = new mongoose.Schema({
 
 
 
-var UserModel = mongoose.model('user', userSchema);
+var UserModel = mongoose.model('users', userSchema);
 module.exports = UserModel;
