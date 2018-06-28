@@ -11,7 +11,6 @@ var ChatSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     messages: [
         new mongoose.Schema(
@@ -19,7 +18,6 @@ var ChatSchema = new mongoose.Schema({
                 id: {
                     type: String,
                     required: true,
-                    unique: true
                 },
                 message: {
                     type: String,
@@ -36,7 +34,6 @@ var ChatSchema = new mongoose.Schema({
     users: [
         String
     ]
-
 })
 
 module.exports = mongoose.model('chat', ChatSchema);

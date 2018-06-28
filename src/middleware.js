@@ -69,5 +69,5 @@ module.exports = {
     checkAuthentication,
     errorHandler,
     createChat,
-    createMessage
+    createMessage,
 };

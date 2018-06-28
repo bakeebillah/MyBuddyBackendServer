@@ -128,18 +128,30 @@ const statustest = (req, res) => {
 
 const getUser = (req, res) => {
     if(!req.body.username){
-        return res.send(400).json({
-            error:'Bad Request',
+        res.set
+        res.status(400).json({
+            error: 'Bad Request',
             message: 'The request must contain a username property'
         });
     } // end if - Checking blank username
+
     userModel.findOne({userName: req.body.username}).exec()
+
+
         .then(user => {
-            res.sendStatus(200);
-            console.log("found User:", req.body.username)
+            if (!user)
+                return res.status(404).json({
+                    error: 'Not Found',
+                    message: `User not found`
+            })
+            else {
+                return res.status(200).json({
+                    message: 'User found'
+                });
+            }
         })
-        .catch(error => res.send(404).json({
-            error: 'User Not Found',
+        .catch(error => res.send(500).json({
+            error: 'Internal Server Error',
             message: error.message
         }));
 }
