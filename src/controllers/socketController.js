@@ -15,20 +15,20 @@ module.exports = (socket) => {
     //create a socket listener, waiting for disconnect
     socket.on('disconnect', () => {
         //delete disconnected user from list of connected users
-        delete connectedUsers[socket.username];
+        delete connectedUsers[socket.userName];
         console.log('disconnect', connectedUsers);
     });
 
     //create a socket listener, waiting for a user to connect and add him to the current list of currently connected users
     socket.on("CONNECT", (user) => {
         if(user) {
-            socket.username = user.username;
-            connectedUsers[socket.username] = socket.id;
+            socket.userName = user.userName;
+            connectedUsers[socket.userName] = socket.id;
         }
         console.log('Reconnected', connectedUsers);
         //find chats the user in part of
         chatModel.find({
-            users: user.username
+            users: user.userName
         })
             .then((chats)=> {
                 console.log("found a few chats", chats);
@@ -42,16 +42,16 @@ module.exports = (socket) => {
     //create a socket listener, waiting for disconnect
     socket.on(USER_DISCONNECTED, () => {
         //delete disconnected user from list of connected users
-        connectedUsers[socket.username];
+        connectedUsers[socket.userName];
         console.log('Disconnected', connectedUsers);
     });
 
     //add client to list of connected users
-    socket.on(LOGIN, (username) => {
-        socket.username = username;
-        if(connectedUsers[username] === undefined) {
+    socket.on(LOGIN, (userName) => {
+        socket.userName = userName;
+        if(connectedUsers[userName] === undefined) {
             //add current socket id with user to list of connected users
-            connectedUsers[socket.username] = socket.id;
+            connectedUsers[socket.userName] = socket.id;
         }
         console.log('Login', connectedUsers);
     });
@@ -107,7 +107,7 @@ module.exports = (socket) => {
             return;
         }
         userModel.findOne({
-            username: receiver
+            userName: receiver
         })
             .then((user) => {
                 if(user) {

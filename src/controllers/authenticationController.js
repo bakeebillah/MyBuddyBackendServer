@@ -8,15 +8,15 @@ const bcrypt = require('bcrypt');
 
 const register =(req,res)=>{
     if (req.body.email &&
-        req.body.username &&
+        req.body.userName &&
         req.body.password) {
-            const user = Object.assign({userName:req.body.username},{email:req.body.email}, {password: bcrypt.hashSync(req.body.password, 8)});
+            const user = Object.assign({userName:req.body.userName},{email:req.body.email}, {password: bcrypt.hashSync(req.body.password, 8)});
             //use schema.create to insert data into the db
             userModel.create(user)
                 .then(user => {
                     // if user is registered without errors
                     // create a token
-                    const token = jsonWebToken.sign({ id: user._id, username: user.username }, config.JwtSecret, {
+                    const token = jsonWebToken.sign({ id: user._id, userName: user.userName }, config.JwtSecret, {
                         expiresIn: 86400 // expires in 24 hours
                     });
                     res.status(200).json({
@@ -63,13 +63,13 @@ const register =(req,res)=>{
 };
 
 const login = (req,res)=>{
-    // Checking blank username
-    if(!req.body.username){
+    // Checking blank userName
+    if(!req.body.userName){
         return res.status(400).json({
-            error:'Missing Username',
-            message: 'The request must contain a username property'
+            error:'Missing UserName',
+            message: 'The request must contain a User Name property'
         });
-    } // end if - Checking blank username
+    } // end if - Checking blank userName
     // Checking blank password
     if(!req.body.password){
         return res.status(400).json({
@@ -77,13 +77,13 @@ const login = (req,res)=>{
             message: 'The request must contain a password property'
         });
     }// end if of Checking blank password
-    userModel.findOne({userName: req.body.username}).exec()
+    userModel.findOne({userName: req.body.userName}).exec()
         .then(user => {
             const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
             if (!isPasswordValid) return res.status(401).send({token: null });
             // if user is found and password is valid
             // create a token
-            const token = jsonWebToken.sign({ id: user._id, username: user.username }, config.JwtSecret, {
+            const token = jsonWebToken.sign({ id: user._id, userName: user.userName }, config.JwtSecret, {
                 expiresIn: 86400 // expires in 24 hours
             });
             res.status(200).json({token: token});
@@ -127,15 +127,15 @@ const statustest = (req, res) => {
 };
 
 const getUser = (req, res) => {
-    if(!req.body.username){
+    if(!req.body.userName){
         res.set
         res.status(400).json({
             error: 'Bad Request',
-            message: 'The request must contain a username property'
+            message: 'The request must contain a userName property'
         });
-    } // end if - Checking blank username
+    } // end if - Checking blank userName
 
-    userModel.findOne({userName: req.body.username}).exec()
+    userModel.findOne({userName: req.body.userName}).exec()
 
 
         .then(user => {
