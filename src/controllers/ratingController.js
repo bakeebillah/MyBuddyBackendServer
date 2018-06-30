@@ -55,7 +55,10 @@ const getContacts = (request, response) => {
             let contacts = [];
 
             for (let chat of chats) {
-                contacts.push(chat.users[0]);
+                contacts.push({
+                    'id' : chat.id,
+                    'name' : chat.users[0]
+                });
             }
 
             response.status(200).json({
