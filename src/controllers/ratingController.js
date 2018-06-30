@@ -1,6 +1,7 @@
 "use strict";
 
 const ratingModel = require('../models/ratingModel');
+const chatModel = require('../models/chatModel');
 
 const setRating = (request, response) => {
 
@@ -20,13 +21,8 @@ const setRating = (request, response) => {
         ratingModel.create(ratingObject)
             .then(ratingObject => {
                 return response.status(200).json({
-                    status: 'success',
-                    rating: {
-                        sender: sender,
-                        receiver: receiver,
-                        comment: comment,
-                        rating: rating
-                    }
+                    status: 'Success',
+                    rating: ratingObject
                 });
             })
             .catch(error => {
@@ -52,4 +48,28 @@ const setRating = (request, response) => {
     }
 };
 
-module.exports = { setRating };
+const getContacts = (request, response) => {
+    chatModel.find({}, function(error, chats) {
+
+        if(chats) {
+            let contacts = [];
+
+            for (let chat of chats) {
+                contacts.push(chat.users[0]);
+            }
+
+            response.status(200).json({
+                status: 'Success',
+                contacts: contacts
+            });
+        }
+        else {
+            response.status(200).json({
+                status: 'There were not found contacted people',
+                contacts: []
+            });
+        }
+    });
+};
+
+module.exports = { setRating, getContacts };
