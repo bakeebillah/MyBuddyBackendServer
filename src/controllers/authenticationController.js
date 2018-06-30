@@ -10,7 +10,8 @@ const register =(req,res)=>{
     if (req.body.email &&
         req.body.userName &&
         req.body.password) {
-            const user = Object.assign({userName:req.body.userName},{email:req.body.email}, {password: bcrypt.hashSync(req.body.password, 8)});
+            const user = Object.assign({userName:req.body.userName},{email:req.body.email}, {password: bcrypt.hashSync(req.body.password, 8)},
+                {subscriptionType: ""}, {isPremiumUser: false});
             //use schema.create to insert data into the db
             userModel.create(user)
                 .then(user => {
@@ -96,8 +97,10 @@ const login = (req,res)=>{
 
 const me = (req, res) => {
     var ObjectId = require('mongodb').ObjectId;
+    // let id = req.params.userId;
     var id = req.userId;
     var o_id = new ObjectId(id);
+    // userModel.find({_id:o_id}).exec()
     userModel.find({_id:o_id}).select('userName').exec()
         .then(user => {
             if (!user) return res.status(404).json({
@@ -128,7 +131,6 @@ const statustest = (req, res) => {
 
 const getUser = (req, res) => {
     if(!req.body.userName){
-        res.set
         res.status(400).json({
             error: 'Bad Request',
             message: 'The request must contain a userName property'
@@ -156,6 +158,26 @@ const getUser = (req, res) => {
         }));
 }
 
+const updateUser = (req, res) => {
+    if (!req.body.userName) {
+        // res.set
+        res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request must contain a userName property'
+        });
+    } // end if - Checking blank userName
+
+    userModel.findByIdAndUpdate(req.body.id, req.body, {
+        new: true,
+        runValidators: true
+    }).exec()
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
 
 module.exports = {
     login,
@@ -163,5 +185,6 @@ module.exports = {
     me,
     logout,
     statustest,
-    getUser
+    getUser,
+    updateUser
 };
