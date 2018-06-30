@@ -3,11 +3,6 @@
 let mongoose = require('mongoose');
 
 let RatingSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     sender: {
         type: String,
         required: true,
@@ -18,6 +13,10 @@ let RatingSchema = new mongoose.Schema({
     },
     comment: {
         type: String,
+        required: true,
+    },
+    rating: {
+        type: Number,
         required: true,
     }
 });

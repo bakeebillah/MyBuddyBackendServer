@@ -10,6 +10,7 @@ const middleware = require('./middleware');
 const auth = require('./routes/authenticationRouter');
 const buddy = require('./routes/buddyRouter');
 const subscription = require('./routes/subscriptionRouter');
+const rating = require('./routes/ratingRouter');
 
 const api = express();
 
@@ -31,6 +32,7 @@ api.get('/', (req, res) => {
 api.use('/auth', auth);
 api.use('/buddy', buddy);
 api.use('/subscriptions', subscription);
+api.use('/ratings', rating);
 
 module.exports = api;
 
