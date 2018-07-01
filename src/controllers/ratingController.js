@@ -5,12 +5,12 @@ const chatModel = require('../models/chatModel');
 
 const setRating = (request, response) => {
 
-    if(request.body.sender && request.body.receiver && request.body.comment && request.body.rating) {
+    if(request.body.sender && request.body.receiver && request.body.comment) {
 
         let sender = request.body.sender;
         let receiver = request.body.receiver;
         let comment = request.body.comment;
-        let rating = request.body.rating;
+        let rating = request.body.rating ? request.body.rating : 0;
 
         const ratingObject = Object.assign(
             {sender: sender},
