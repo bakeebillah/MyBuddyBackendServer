@@ -105,6 +105,7 @@ module.exports = (socket) => {
             socket.emit('ERROR', error);
             return;
         }
+        console.log(receiver)
         userModel.findOne({
             userName: receiver
         })
