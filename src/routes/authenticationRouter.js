@@ -9,5 +9,6 @@ router.post('/register',authController.register);
 router.get('/me', middleware.checkAuthentication , authController.me);
 router.get('/logout', authController.logout);
 router.post('/user/', authController.getUser);
+router.put('/save', authController.updateUser);
 
 module.exports =router;
