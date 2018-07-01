@@ -101,12 +101,13 @@ const me = (req, res) => {
     var id = req.userId;
     var o_id = new ObjectId(id);
     // userModel.find({_id:o_id}).exec()
-    userModel.find({_id:o_id}).select('userName').exec()
+    userModel.find({_id:o_id}).select('userName subscriptionType').exec()
         .then(user => {
             if (!user) return res.status(404).json({
                 error: 'Not Found',
                 message: `User not found`
             });
+
             res.status(200).json(user)
         })
         .catch(error => res.status(500).json({
@@ -157,7 +158,32 @@ const getUser = (req, res) => {
             message: error.message
         }));
 }
+const getUserSubs = (req, res) => {
+    if(!req.body.userName){
+        res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request must contain a userName property'
+        });
+    } // end if - Checking blank userName
 
+    userModel.findOne({userName: req.body.userName}).select( 'userName isPremiumUser subscriptionType').exec()
+
+
+        .then(user => {
+            if (!user)
+                return res.status(404).json({
+                    error: 'Not Found',
+                    message: `User not found`
+                })
+            else {
+                return res.status(200).json(user);
+            }
+        })
+        .catch(error => res.send(500).json({
+            error: 'Internal Server Error',
+            message: error.message
+        }));
+}
 const updateUser = (req, res) => {
     if (!req.body.userName) {
         // res.set
@@ -186,5 +212,6 @@ module.exports = {
     logout,
     statustest,
     getUser,
-    updateUser
+    updateUser,
+    getUserSubs
 };
