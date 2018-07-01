@@ -49,30 +49,50 @@ const setRating = (request, response) => {
 };
 
 const getContacts = (request, response) => {
-    chatModel.find({}, function(error, chats) {
 
-        if(chats) {
-            let contacts = [];
+    if(request.query.user) {
 
-            for (let chat of chats) {
-                contacts.push({
-                    'id' : chat.id,
-                    'name' : chat.users[0]
+        let user = request.query.user;
+
+        chatModel.find({}, function (error, chats) {
+            if (chats) {
+                let contacts = [];
+
+                for (let chat of chats) {
+
+                    if(chat.users[0] !== user && chat.users[1] === user) {
+                        contacts.push({
+                            'id': chat.id,
+                            'name': chat.users[0]
+                        });
+                    }
+                    else if(chat.users[1] !== user && chat.users[0] === user) {
+                        contacts.push({
+                            'id': chat.id,
+                            'name': chat.users[1]
+                        });
+                    }
+                }
+
+                response.status(200).json({
+                    status: 'Success',
+                    contacts: contacts
                 });
             }
-
-            response.status(200).json({
-                status: 'Success',
-                contacts: contacts
-            });
-        }
-        else {
-            response.status(200).json({
-                status: 'There were not found contacted people',
-                contacts: []
-            });
-        }
-    });
+            else {
+                response.status(200).json({
+                    status: 'There were not found contacted people',
+                    contacts: []
+                });
+            }
+        });
+    }
+    else {
+        response.status(400).json({
+            error: 'Bad Request',
+            message: 'Parameter user is required.'
+        });
+    }
 };
 
 module.exports = { setRating, getContacts };
